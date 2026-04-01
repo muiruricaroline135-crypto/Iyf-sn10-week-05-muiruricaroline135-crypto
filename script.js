@@ -1,39 +1,27 @@
-// SELECT ELEMENTS
-const form = document.getElementById("todo-form");
-const input = document.getElementById("task-input");
-const taskList = document.getElementById("task-list");
+// SELECT ELEMENTS const form = document.getElementById("todo-form"); const input = document.getElementById("task-input"); const taskList = document.getElementById("task-list");
 
-// HANDLE FORM SUBMIT EVENT
-form.addEventListener("submit", function (e) {
-  e.preventDefault(); // prevent page reload
+// LOAD TASKS WHEN PAGE OPENS document.addEventListener("DOMContentLoaded", loadTasks);
 
-  const taskText = input.value;
+// HANDLE FORM SUBMIT form.addEventListener("submit", function (e) { e.preventDefault();
 
-  if (taskText === "") return;
+const taskText = input.value.trim(); if (taskText === "") return;
 
-  // CREATE NEW LIST ITEM
-  const li = document.createElement("li");
-  li.textContent = taskText;
+addTaskToDOM(taskText); saveTask(taskText);
 
-  // TOGGLE COMPLETE ON CLICK
-  li.addEventListener("click", function () {
-    li.classList.toggle("completed");
-  });
+input.value = ""; });
 
-  // CREATE DELETE BUTTON
-  const deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "X";
+// ADD TASK TO PAGE function addTaskToDOM(taskText) { const li = document.createElement("li");
 
-  deleteBtn.addEventListener("click", function () {
-    li.remove();
-  });
+const span = document.createElement("span"); span.textContent = taskText;
 
-  // APPEND BUTTON TO LI
-  li.appendChild(deleteBtn);
+// MARK AS COMPLETED span.addEventListener("click", function () { span.classList.toggle("completed"); });
 
-  // ADD LI TO LIST
-  taskList.appendChild(li);
+// DELETE BUTTON const deleteBtn = document.createElement("button"); deleteBtn.textContent = "X";
 
-  // CLEAR INPUT
-  input.value = "";
-});
+deleteBtn.addEventListener("click", function () { li.remove(); deleteTask(taskText); });
+
+li.appendChild(span); li.appendChild(deleteBtn); taskList.appendChild(li); }
+
+// SAVE TASK TO LOCAL STORAGE function saveTask(task) { const tasks = JSON.parse(localStorage.getItem("tasks")) || []; tasks.push(task); localStorage.setItem("tasks", JSON.stringify(tasks)); }
+
+// LOAD TASKS FROM LOCAL STORAGE function loadTasks() { const tasks = JSON.parse(localStorage.get
